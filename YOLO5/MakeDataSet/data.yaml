@@ -1,0 +1,5 @@
+train: ../MakeDataSet/train/images
+val: ../MakeDataSet/valid/images
+
+nc: 2
+names: ['mask', 'no-mask']
