@@ -12,10 +12,10 @@ import torch.nn as nn
 from PIL import Image
 from torch.cuda import amp
 
-from utils.datasets import letterbox
-from utils.general import non_max_suppression, make_divisible, scale_coords, increment_path, xyxy2xywh, save_one_box
-from utils.plots import colors, plot_one_box
-from utils.torch_utils import time_synchronized
+from yolov5.utils.datasets import letterbox
+from yolov5.utils.general import non_max_suppression, make_divisible, scale_coords, increment_path, xyxy2xywh, save_one_box
+from yolov5.utils.plots import colors, plot_one_box
+from yolov5.utils.torch_utils import time_synchronized
 
 
 def autopad(k, p=None):  # kernel, padding
@@ -168,6 +168,9 @@ class Focus(nn.Module):
         # self.contract = Contract(gain=2)
 
     def forward(self, x):  # x(b,c,w,h) -> y(b,4c,w/2,h/2)
+
+        print("22222222222")
+
         return self.conv(torch.cat([x[..., ::2, ::2], x[..., 1::2, ::2], x[..., ::2, 1::2], x[..., 1::2, 1::2]], 1))
         # return self.conv(self.contract(x))
 

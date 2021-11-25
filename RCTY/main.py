@@ -2,7 +2,6 @@ import sys
 import cv2
 import time
 import argparse
-import random
 import torch
 import numpy as np
 import torch.backends.cudnn as cudnn
@@ -11,23 +10,65 @@ from utils.torch_utils import select_device
 from models.experimental import attempt_load
 from utils.general import check_img_size, non_max_suppression, scale_coords
 from utils.datasets import letterbox
+from utils.plots import plot_one_box
 from utils.plots import plot_one_box2
+from PIL import Image, ImageDraw, ImageFont
+
+from selfDeepSort import Track
 
 
-from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtWidgets import QApplication, QMessageBox
+#from PyQt5.QtUiTools import QUiLoader
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
-from lib.share import shareInfo # 公共变量名
+from lib.share import shareInfo  # 公共变量名
 
-class win_Main :
+from ui.team.team import Ui_MainWindow
+#from ui.detect_ui import Ui_MainWindow
 
-    def __init__(self):
-        self.ui = QUiLoader().load('ui/detect_ui.ui')
+def cv2ImgAddChineseText(img, text, left, top, textColor, textSize=25):
+    textColor = tuple(textColor)  # 好像外面传元祖进来的时候，到函数里面会变成list
+    if (isinstance(img, np.ndarray)):  # 判断是否OpenCV图片类型
+        img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
+    draw = ImageDraw.Draw(img)  # 创建一个可以在给定图像上绘图的对象
+    fontStyle = ImageFont.truetype("simhei.ttf", textSize, encoding="utf-8")  # 字体的格式
+    draw.text((left, top), text, textColor, font=fontStyle)  # 绘制文本
+    return cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR)  # 转换回OpenCV格式
+
+
+def plot_warning_text(img, text, flag=0):
+    text.sort()  # 让每次显示的字符串的顺序都一样
+    color = (0, 255, 0)  # 平常是RGB 比如RGB(255,0,0) 红色
+    # opencv中的颜色通道对应是BGR 比如BGR(0,0,255) 红色
+    ori_index = [10, 10]
+    if '正常' not in text:
+        color = [255, 215, 0]  # 其他提示的文字的颜色，由于底下用的是PIL库的写字工具，因此颜色通道仍是RGB
+        color_e = (255, 215, 0)  # "异常"两字的颜色，RGB
+        img = cv2ImgAddChineseText(img, "异常：", ori_index[0], ori_index[1], color_e)
+        ori_index[1] += 30
+
+    for i in range(len(text)):
+        content = text[i]
+        index = (ori_index[0], ori_index[1] + i * 30)
+        img = cv2ImgAddChineseText(img, content, index[0], index[1], color)  # 图片 添加的文字   位置      字体                   字体大小 字体颜色 字体粗细
+
+    return img  # cv2.putText(img, '111', index, cv2.FONT_HERSHEY_SIMPLEX, 0.75, color, 2)
+
+
+class win_Main(QtWidgets.QMainWindow):
+
+    def __init__(self, parent=None):
+        #self.ui = QUiLoader().load('ui/team/team.ui')
+        super(win_Main, self).__init__(parent)
+        self.ui = Ui_MainWindow()
+
+        self.ui.setupUi(self)
         self.timer_video = QtCore.QTimer()  # 创建定时器
         self.init_slots()
-        self.cap = cv2.VideoCapture()
+        # self.cap = cv2.VideoCapture()
         self.num_stop = 1  # 暂停与播放辅助信号，note：通过奇偶来控制暂停与播放
         self.output_folder = 'output/'
         self.vid_writer = None
@@ -38,18 +79,22 @@ class win_Main :
         self.ui.pushButton_video.clicked.connect(self.button_video_open)
         self.ui.pushButton_camer.clicked.connect(self.button_camera_open)
         self.ui.pushButton_stop.clicked.connect(self.button_video_stop)
+        self.ui.pushButton_start.clicked.connect(self.button_video_stop)
+
+
         self.ui.pushButton_finish.clicked.connect(self.finish_detect)
 
         self.timer_video.timeout.connect(self.show_video_frame)  # 定时器超时，将槽绑定至show_video_frame
 
         self.model_init()
+        self.trackPerson = Track()
 
     # 加载相关参数，并初始化模型
     def model_init(self):
         # 模型相关参数配置
         parser = argparse.ArgumentParser()
         parser.add_argument('--weights', nargs='+', type=str, default='weights/best.pt', help='model.pt path(s)')
-        parser.add_argument('--source', type=str, default='data/images', help='source')  # file/folder, 0 for webcam
+        parser.add_argument('--source', type=str, default='0', help='source')  # file/folder, 0 for webcam
         parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
         parser.add_argument('--conf-thres', type=float, default=0.5, help='object confidence threshold')
         parser.add_argument('--iou-thres', type=float, default=0.45, help='IOU threshold for NMS')
@@ -85,9 +130,9 @@ class win_Main :
         # Get names and colors
         self.names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
         self.colors = [[255, 144, 30], [144, 74, 44], [0, 0, 255], [139, 0, 0], [255, 255, 255], [128, 128, 128]]
-        print("model initial done")
+        print("yolov5 model initial done")
         # 设置提示框
-        #QtWidgets.QMessageBox.information(self.ui, u"Notice", u"模型加载完成", buttons=QtWidgets.QMessageBox.Ok,
+        # QtWidgets.QMessageBox.information(self.ui, u"Notice", u"模型加载完成", buttons=QtWidgets.QMessageBox.Ok,
         #                                  defaultButton=QtWidgets.QMessageBox.Ok)
 
     # 目标检测
@@ -98,6 +143,8 @@ class win_Main :
         :return: info_show:检测输出的文字信息
         '''
         showimg = img
+
+        # '''
         with torch.no_grad():
             img = letterbox(img, new_shape=self.opt.img_size)[0]
             # Convert
@@ -109,43 +156,73 @@ class win_Main :
             if img.ndimension() == 3:
                 img = img.unsqueeze(0)
             # Inference
+
+            print('333333333333333333333')
+
             pred = self.model(img, augment=self.opt.augment)[0]
+
+            print('4444444444444444444444')
             # Apply NMS
             pred = non_max_suppression(pred, self.opt.conf_thres, self.opt.iou_thres, classes=self.opt.classes,
                                        agnostic=self.opt.agnostic_nms)
             info_show = ""
             # Process detections
+
+            warn_list = set()
             for i, det in enumerate(pred):
                 if det is not None and len(det):
                     # Rescale boxes from img_size to im0 size
                     det[:, :4] = scale_coords(img.shape[2:], det[:, :4], showimg.shape).round()
+
                     for *xyxy, conf, cls in reversed(det):
+                        if self.names[int(cls)] == 'empty':
+                            warn_list.add('有垃圾桶盖子未盖')
+                        elif self.names[int(cls)] == 'full':
+                            warn_list.add('有垃圾桶已满')
+                        elif self.names[int(cls)] == 'ofc':
+                            warn_list.add('有垃圾桶已满')
+                        elif self.names[int(cls)] == 'trash':
+                            warn_list.add('垃圾桶附近存在垃圾')
+
                         label = '%s %.2f' % (self.names[int(cls)], conf)
                         name_list.append(self.names[int(cls)])
-                        single_info = plot_one_box2(xyxy, showimg, label=label, color=self.colors[int(cls)],
-                                                    line_thickness=2)
-                        print(single_info)
-                        info_show = info_show + single_info + "\n"
-        return info_show
+                        plot_one_box(xyxy, showimg, label=label, color=self.colors[int(cls)],
+                                     line_thickness=2)
+
+            if not warn_list:  # 说明没有异常状态
+                warn_list.add('正常')
+
+        # '''
+        ###
+        # self.trackPerson.detect(name_list, showimg)
+
+        showimg = plot_warning_text(showimg, list(warn_list))
+        #cv2.imshow('img234', showimg)
+
+        info_show = ""
+        for i, single_info in enumerate(warn_list):
+            info_show = info_show + single_info + "\n"
+        return showimg, info_show
+
 
     # 打开图片并检测
     def button_image_open(self):
         print('button_image_open')
         name_list = []
         try:
-            img_name, _ = QtWidgets.QFileDialog.getOpenFileName(self.ui, "打开图片", "data/images",
+            img_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "打开图片", "data/images",
                                                                 "*.jpg;;*.png;;All Files(*)")
         except OSError as reason:
             print('文件打开出错啦！核对路径是否正确' + str(reason))
         else:
             # 判断图片是否为空
             if not img_name:
-                QtWidgets.QMessageBox.warning(self.ui, u"Warning", u"打开图片失败", buttons=QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.warning(self, u"Warning", u"打开图片失败", buttons=QtWidgets.QMessageBox.Ok,
                                               defaultButton=QtWidgets.QMessageBox.Ok)
             else:
                 img = cv2.imread(img_name)
                 print("img_name:", img_name)
-                info_show = self.detect(name_list, img)
+                showimg, info_show = self.detect(name_list, img)
                 print(info_show)
                 # 获取当前系统时间，作为img文件名
                 now = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time()))
@@ -157,12 +234,13 @@ class win_Main :
                 self.ui.textBrowser.setText(info_show)
 
                 # 检测结果显示在界面
-                self.result = cv2.cvtColor(img, cv2.COLOR_BGR2BGRA)
+                self.result = cv2.cvtColor(showimg, cv2.COLOR_BGR2BGRA)
                 self.result = cv2.resize(self.result, (640, 480), interpolation=cv2.INTER_AREA)
                 self.QtImg = QtGui.QImage(self.result.data, self.result.shape[1], self.result.shape[0],
                                           QtGui.QImage.Format_RGB32)
                 self.ui.label.setPixmap(QtGui.QPixmap.fromImage(self.QtImg))
                 self.ui.label.setScaledContents(True)  # 设置图像自适应界面大小
+
 
     def set_video_name_and_path(self):
         # 获取当前系统时间，作为img和video的文件名
@@ -181,16 +259,18 @@ class win_Main :
 
     # 打开视频并检测
     def button_video_open(self):
-        video_name, _ = QtWidgets.QFileDialog.getOpenFileName(self.ui, "打开视频", "data/", "*.mp4;;*.avi;;All Files(*)")
-        flag = self.cap.open(video_name)
+        video_name, _ = QtWidgets.QFileDialog.getOpenFileName(self, "打开视频", "data/", "*.mp4;;*.avi;;All Files(*)")
+        self.cap = cv2.VideoCapture(video_name)
+        # flag = self.cap.open(video_name)
+        flag = self.cap.isOpened()
         if not flag:
-            QtWidgets.QMessageBox.warning(self.ui, u"Warning", u"打开视频失败", buttons=QtWidgets.QMessageBox.Ok,
+            QtWidgets.QMessageBox.warning(self, u"Warning", u"打开视频失败", buttons=QtWidgets.QMessageBox.Ok,
                                           defaultButton=QtWidgets.QMessageBox.Ok)
         else:
             # -------------------------写入视频----------------------------------#
             fps, w, h, save_path = self.set_video_name_and_path()
             self.vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-            self.timer_video.start(30)  # 以30ms为间隔，启动或重启定时器
+            self.timer_video.start(15)  # 以30ms为间隔，启动或重启定时器
             # 进行视频识别时，关闭其他按键点击功能
             self.ui.pushButton_video.setDisabled(True)
             self.ui.pushButton_img.setDisabled(True)
@@ -206,13 +286,13 @@ class win_Main :
         # 判断摄像头是否处于打开状态
         bool_open = self.cap.isOpened()
         if not bool_open:
-            QtWidgets.QMessageBox.warning(self.ui, u"Warning", u"打开摄像头失败", buttons=QtWidgets.QMessageBox.Ok,
+            QtWidgets.QMessageBox.warning(self, u"Warning", u"打开摄像头失败", buttons=QtWidgets.QMessageBox.Ok,
                                           defaultButton=QtWidgets.QMessageBox.Ok)
         else:
             fps, w, h, save_path = self.set_video_name_and_path()
             fps = 5  # 控制摄像头检测下的fps，Note：保存的视频，播放速度有点快，我只是粗暴的调整了FPS
             self.vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*'mp4v'), fps, (w, h))
-            self.timer_video.start(30)
+            self.timer_video.start(15)
             self.ui.pushButton_video.setDisabled(True)
             self.ui.pushButton_img.setDisabled(True)
             self.ui.pushButton_camer.setDisabled(True)
@@ -222,14 +302,14 @@ class win_Main :
         name_list = []
         flag, img = self.cap.read()
         if img is not None:
-            info_show = self.detect(name_list, img)  # 检测结果写入到原始img上
+            showimg, info_show = self.detect(name_list, img)  # 检测结果写入到原始img上
 
             self.vid_writer.write(img)  # 检测结果写入视频
             print(info_show)
             # 检测信息显示在界面
             self.ui.textBrowser.setText(info_show)
 
-            show = cv2.resize(img, (640, 480))  # 直接将原始img上的检测结果进行显示
+            show = cv2.resize(showimg, (640, 480))  # 直接将原始img上的检测结果进行显示
             self.result = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
             showImage = QtGui.QImage(self.result.data, self.result.shape[1], self.result.shape[0],
                                      QtGui.QImage.Format_RGB888)
@@ -242,6 +322,7 @@ class win_Main :
             self.cap.release()  # 释放video_capture资源
             self.vid_writer.release()  # 释放video_writer资源
             self.ui.label.clear()
+            self.ui.textBrowser.clear()
             # 视频帧显示期间，禁用其他检测按键功能
             self.ui.pushButton_video.setDisabled(False)
             self.ui.pushButton_img.setDisabled(False)
@@ -253,13 +334,13 @@ class win_Main :
         # 暂停检测
         # 若QTimer已经触发，且激活
         if self.timer_video.isActive() == True and self.num_stop % 2 == 1:
-            self.ui.pushButton_stop.setText(u'继续检测')  # 当前状态为暂停状态
+            # self.ui.pushButton_stop.setText(u'继续检测')  # 当前状态为暂停状态
             self.num_stop = self.num_stop + 1  # 调整标记信号为偶数
             self.timer_video.blockSignals(True)
         # 继续检测
         else:
             self.num_stop = self.num_stop + 1
-            self.ui.pushButton_stop.setText(u'暂停检测')
+            # self.ui.pushButton_stop.setText(u'暂停检测')
 
     # 结束视频检测
     def finish_detect(self):
@@ -276,12 +357,13 @@ class win_Main :
         # Note:点击暂停之后，num_stop为偶数状态
         if self.num_stop % 2 == 0:
             print("Reset stop/begin!")
-            self.ui.pushButton_stop.setText(u'暂停/继续')
+            # self.ui.pushButton_stop.setText(u'暂停/继续')
             self.num_stop = self.num_stop + 1
             self.timer_video.blockSignals(False)
 
+
 if __name__ == "__main__":
-    app = QApplication([])
-    shareInfo.mainWin = win_Main()
-    shareInfo.mainWin.ui.show()
-    app.exec_()
+    app = QtWidgets.QApplication(sys.argv)
+    current_ui = win_Main()
+    current_ui.show()
+    sys.exit(app.exec_())

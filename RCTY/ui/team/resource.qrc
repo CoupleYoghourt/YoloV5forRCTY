@@ -1,0 +1,29 @@
+<RCC>
+  <qresource prefix="test">
+    <file>云上传.png</file>
+    <file>消息 (1).png</file>
+    <file>消息.png</file>
+    <file>搜索.png</file>
+    <file>设置 (1).png</file>
+    <file>音量.png</file>
+    <file>播放.png</file>
+    <file>已停止.png</file>
+    <file>功能-线.png</file>
+    <file>消息.png</file>
+    <file>用户.png</file>
+    <file>设置.png</file>
+    <file>_增加.png</file>
+    <file>窗口化.png</file>
+    <file>窗口 (1).png</file>
+    <file>窗口.png</file>
+    <file>榕创科技LOGO-02.png</file>
+    <file>ed80cd5b7d7f6020e4047e6301b3f4a8.jpeg</file>
+    <file>下箭头.png</file>
+    <file>关闭.png</file>
+    <file>最小化 (1).png</file>
+    <file>下箭头 (1).png</file>
+    <file>最小化.png</file>
+    <file>VCG41N667816120.jpg</file>
+    <file>12.jfif</file>
+  </qresource>
+</RCC>
