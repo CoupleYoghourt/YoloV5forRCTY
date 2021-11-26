@@ -15,7 +15,7 @@ from utils.plots import plot_one_box2
 from PIL import Image, ImageDraw, ImageFont
 
 from selfDeepSort import Track
-
+from openpose import OpenPose
 
 #from PyQt5.QtUiTools import QUiLoader
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -23,9 +23,10 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from lib.share import shareInfo  # 公共变量名
-
+from lib.share import SI  # 公共变量名
+import ui.team.resource_rc
 from ui.team.team import Ui_MainWindow
+from FeedBack import *
 #from ui.detect_ui import Ui_MainWindow
 
 def cv2ImgAddChineseText(img, text, left, top, textColor, textSize=25):
@@ -64,14 +65,16 @@ class win_Main(QtWidgets.QMainWindow):
         #self.ui = QUiLoader().load('ui/team/team.ui')
         super(win_Main, self).__init__(parent)
         self.ui = Ui_MainWindow()
-
         self.ui.setupUi(self)
+
         self.timer_video = QtCore.QTimer()  # 创建定时器
         self.init_slots()
+        self.init_myVideo()
         # self.cap = cv2.VideoCapture()
         self.num_stop = 1  # 暂停与播放辅助信号，note：通过奇偶来控制暂停与播放
         self.output_folder = 'output/'
         self.vid_writer = None
+        self.ui.username.setText(SI.username)
 
     # 控件绑定相关操作
     def init_slots(self):
@@ -80,14 +83,20 @@ class win_Main(QtWidgets.QMainWindow):
         self.ui.pushButton_camer.clicked.connect(self.button_camera_open)
         self.ui.pushButton_stop.clicked.connect(self.button_video_stop)
         self.ui.pushButton_start.clicked.connect(self.button_video_stop)
-
-
         self.ui.pushButton_finish.clicked.connect(self.finish_detect)
+        self.ui.pushButton_logout.clicked.connect(self.handleLogout)
+        self.ui.pushButton_feedBack.clicked.connect(self.handleFeedBack)
+
+        #self.ui.comboBox_myVideo.currentIndexChanged.connect(self.handleVideoSelectionChange)
 
         self.timer_video.timeout.connect(self.show_video_frame)  # 定时器超时，将槽绑定至show_video_frame
-
         self.model_init()
         self.trackPerson = Track()
+        #self.OpenPose = OpenPose()
+
+    # 初始化 录像 选项
+    def init_myVideo(self):
+        pass
 
     # 加载相关参数，并初始化模型
     def model_init(self):
@@ -194,7 +203,9 @@ class win_Main(QtWidgets.QMainWindow):
 
         # '''
         ###
-        # self.trackPerson.detect(name_list, showimg)
+        #self.trackPerson.detect(name_list, showimg)
+
+        #self.OpenPose.detect(name_list, showimg)
 
         showimg = plot_warning_text(showimg, list(warn_list))
         #cv2.imshow('img234', showimg)
@@ -244,7 +255,9 @@ class win_Main(QtWidgets.QMainWindow):
 
     def set_video_name_and_path(self):
         # 获取当前系统时间，作为img和video的文件名
-        now = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime(time.time()))
+        self.createTime = time.localtime(time.time())
+        now = time.strftime("%Y-%m-%d-%H-%M-%S", self.createTime)
+
         # if vid_cap:  # video
         fps = self.cap.get(cv2.CAP_PROP_FPS)
         w = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -361,9 +374,18 @@ class win_Main(QtWidgets.QMainWindow):
             self.num_stop = self.num_stop + 1
             self.timer_video.blockSignals(False)
 
+    # 处理意见反馈
+    def handleFeedBack(self):
+        SI.suggestWin = suggest_Form()
+        SI.suggestWin.show()
+
+    # 处理登出
+    def handleLogout(self):
+        SI.mainWin.hide()
+        SI.loginWin.show()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    current_ui = win_Main()
-    current_ui.show()
+    SI.mainWin = win_Main()
+    SI.mainWin.show()
     sys.exit(app.exec_())

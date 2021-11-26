@@ -1,1 +1,0 @@
-pyuic5 -o team.py team.ui

@@ -15,7 +15,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1280</width>
+    <width>450</width>
     <height>810</height>
    </size>
   </property>
@@ -83,15 +83,15 @@ background-color: rgb(255, 255, 255);
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>50</y>
+       <y>49</y>
        <width>210</width>
-       <height>760</height>
+       <height>729</height>
       </rect>
      </property>
      <property name="minimumSize">
       <size>
        <width>210</width>
-       <height>760</height>
+       <height>729</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -101,8 +101,13 @@ background-color: rgb(255, 255, 255);
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">
-background-color: rgb（250,250,250）;</string>
+      <string notr="true">*{
+
+	background-color: rgb（250,250,250）;
+}
+
+
+</string>
      </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
@@ -115,7 +120,7 @@ background-color: rgb（250,250,250）;</string>
      </property>
      <property name="iconSize">
       <size>
-       <width>36</width>
+       <width>37</width>
        <height>35</height>
       </size>
      </property>
@@ -125,95 +130,12 @@ background-color: rgb（250,250,250）;</string>
      <widget class="QWidget" name="tab">
       <attribute name="icon">
        <iconset resource="resource.qrc">
-        <normaloff>:/test/用户.png</normaloff>:/test/用户.png</iconset>
+        <normaloff>:/test/用户-角色-用户名-单人_jurassic (1).png</normaloff>
+        <normalon>:/test/用户-角色-用户名-单人_jurassic.png</normalon>:/test/用户-角色-用户名-单人_jurassic (1).png</iconset>
       </attribute>
       <attribute name="title">
        <string/>
       </attribute>
-      <widget class="QWidget" name="widget" native="true">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>672</y>
-         <width>210</width>
-         <height>40</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">
-background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
-
-</string>
-       </property>
-       <widget class="QPushButton" name="pushButton_4">
-        <property name="geometry">
-         <rect>
-          <x>-2</x>
-          <y>4</y>
-          <width>105</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;仿宋&quot;;
-	background:transparent;</string>
-        </property>
-        <property name="text">
-         <string>设备管理</string>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/test/设置.png</normaloff>:/test/设置.png</iconset>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="geometry">
-         <rect>
-          <x>104</x>
-          <y>5</y>
-          <width>105</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">font: 9pt &quot;仿宋&quot;;
-	background:transparent;</string>
-        </property>
-        <property name="text">
-         <string>添加</string>
-        </property>
-        <property name="icon">
-         <iconset resource="resource.qrc">
-          <normaloff>:/test/_增加.png</normaloff>:/test/_增加.png</iconset>
-        </property>
-       </widget>
-       <widget class="Line" name="line_2">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>1</y>
-          <width>210</width>
-          <height>3</height>
-         </rect>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </widget>
-      <widget class="Line" name="line_3">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>675</y>
-         <width>2</width>
-         <height>40</height>
-        </rect>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pushButton">
        <property name="enabled">
         <bool>true</bool>
@@ -221,7 +143,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgb
        <property name="geometry">
         <rect>
          <x>170</x>
-         <y>0</y>
+         <y>1</y>
          <width>40</width>
          <height>32</height>
         </rect>
@@ -239,8 +161,11 @@ background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgb
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">background:transparent;
-background-color: rgb(225,223,223);</string>
+        <string notr="true">*{
+	background:transparent;
+	background-color: rgb(225,223,223);
+	border:0px;
+}</string>
        </property>
        <property name="text">
         <string/>
@@ -272,7 +197,9 @@ background-color: rgb(225,223,223);</string>
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: rgb(0, 0, 0);</string>
+        <string notr="true">*{
+	color: rgb(0, 0, 0);
+}</string>
        </property>
        <property name="inputMask">
         <string/>
@@ -313,16 +240,11 @@ background-color: rgb(225,223,223);</string>
        </property>
        <item>
         <property name="text">
-         <string>我的设备</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>默认分组</string>
         </property>
        </item>
       </widget>
-      <widget class="QComboBox" name="comboBox_5">
+      <widget class="QComboBox" name="comboBox_myVideo">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -333,12 +255,7 @@ background-color: rgb(225,223,223);</string>
        </property>
        <item>
         <property name="text">
-         <string>我的设备</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>本地设备</string>
+         <string>我的录像</string>
         </property>
        </item>
       </widget>
@@ -346,7 +263,8 @@ background-color: rgb(225,223,223);</string>
      <widget class="QWidget" name="tab_2">
       <attribute name="icon">
        <iconset resource="resource.qrc">
-        <normaloff>:/test/消息.png</normaloff>:/test/消息.png</iconset>
+        <normaloff>:/test/消息 (3).png</normaloff>
+        <normalon>:/test/消息 (2).png</normalon>:/test/消息 (3).png</iconset>
       </attribute>
       <attribute name="title">
        <string/>
@@ -355,7 +273,8 @@ background-color: rgb(225,223,223);</string>
      <widget class="QWidget" name="tab_3">
       <attribute name="icon">
        <iconset resource="resource.qrc">
-        <normaloff>:/test/功能-线.png</normaloff>:/test/功能-线.png</iconset>
+        <normaloff>:/test/功能管理 (1).png</normaloff>
+        <normalon>:/test/功能管理.png</normalon>:/test/功能管理 (1).png</iconset>
       </attribute>
       <attribute name="title">
        <string/>
@@ -416,86 +335,29 @@ image: url(:/test/榕创科技LOGO-02.png);</string>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 16pt &quot;隶书&quot;;
+       <string notr="true">font: 14pt &quot;黑体&quot;;
 background:transparent;</string>
       </property>
       <property name="text">
        <string>垃圾存放点智能管理平台</string>
       </property>
      </widget>
-     <widget class="QToolButton" name="toolButton">
+     <widget class="QPushButton" name="pushButton_logout">
       <property name="geometry">
        <rect>
-        <x>1170</x>
-        <y>20</y>
-        <width>21</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">
-	background:transparent;
-</string>
-      </property>
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/test/最小化 (1).png</normaloff>:/test/最小化 (1).png</iconset>
-      </property>
-     </widget>
-     <widget class="QToolButton" name="toolButton_2">
-      <property name="geometry">
-       <rect>
-        <x>1240</x>
-        <y>20</y>
-        <width>21</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">	background:transparent;</string>
-      </property>
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/test/关闭.png</normaloff>:/test/关闭.png</iconset>
-      </property>
-     </widget>
-     <widget class="QToolButton" name="toolButton_3">
-      <property name="geometry">
-       <rect>
-        <x>1200</x>
-        <y>20</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">	background:transparent;</string>
-      </property>
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/test/窗口化.png</normaloff>:/test/窗口化.png</iconset>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButton_9">
-      <property name="geometry">
-       <rect>
-        <x>1090</x>
-        <y>20</y>
+        <x>1213</x>
+        <y>19</y>
         <width>41</width>
         <height>28</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">	background:transparent;</string>
+       <string notr="true">*{
+		background:transparent;
+}
+*:hover{
+	color: rgb(42,166,244);
+}</string>
       </property>
       <property name="text">
        <string>退出</string>
@@ -504,7 +366,7 @@ background:transparent;</string>
      <widget class="QPushButton" name="pushButton_10">
       <property name="geometry">
        <rect>
-        <x>954</x>
+        <x>1099</x>
         <y>20</y>
         <width>31</width>
         <height>28</height>
@@ -521,32 +383,19 @@ background:transparent;</string>
         <normaloff>:/test/用户.png</normaloff>:/test/用户.png</iconset>
       </property>
      </widget>
-     <widget class="QLabel" name="label_5">
+     <widget class="QLabel" name="username">
       <property name="geometry">
        <rect>
-        <x>990</x>
-        <y>20</y>
-        <width>91</width>
-        <height>20</height>
+        <x>1128</x>
+        <y>19</y>
+        <width>81</width>
+        <height>28</height>
        </rect>
       </property>
       <property name="text">
        <string>用户名</string>
       </property>
      </widget>
-    </widget>
-    <widget class="Line" name="line">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>50</y>
-       <width>1281</width>
-       <height>5</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
     </widget>
     <widget class="QWidget" name="widget_3" native="true">
      <property name="geometry">
@@ -634,7 +483,7 @@ background:transparent;</string>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(225,223,223);
 
-font: 9pt &quot;楷体&quot;;</string>
+font: 9pt &quot;宋体&quot;;</string>
       </property>
       <property name="text">
        <string> 垃圾存放点信息输出</string>
@@ -645,13 +494,13 @@ font: 9pt &quot;楷体&quot;;</string>
        <rect>
         <x>788</x>
         <y>350</y>
-        <width>284</width>
+        <width>281</width>
         <height>32</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: rgb(225,223,223);
-font: 9pt &quot;楷体&quot;;</string>
+font: 9pt &quot;宋体&quot;;</string>
       </property>
       <property name="text">
        <string> 行人行为信息输出</string>
@@ -674,22 +523,6 @@ font: 9pt &quot;楷体&quot;;</string>
       </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="Line" name="line_4">
-      <property name="geometry">
-       <rect>
-        <x>984</x>
-        <y>0</y>
-        <width>1</width>
-        <height>42</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
       </property>
      </widget>
      <widget class="QLabel" name="label">
@@ -724,33 +557,16 @@ font: 9pt &quot;楷体&quot;;</string>
      <widget class="QWidget" name="widget_8" native="true">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
+        <x>-2</x>
+        <y>-1</y>
         <width>1071</width>
-        <height>41</height>
+        <height>42</height>
        </rect>
       </property>
       <property name="styleSheet">
        <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
 </string>
       </property>
-      <widget class="QLineEdit" name="lineEdit">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>121</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">font: 20pt &quot;黑体&quot;;
-border:0px;</string>
-       </property>
-       <property name="text">
-        <string>主屏幕</string>
-       </property>
-      </widget>
       <widget class="QPushButton" name="pushButton_6">
        <property name="geometry">
         <rect>
@@ -761,8 +577,16 @@ border:0px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 9pt &quot;仿宋&quot;;
-	background:transparent;</string>
+        <string notr="true">*{
+	
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;宋体&quot;;
+	background:transparent;
+}
+*:hover
+{
+	color: rgb(42,166,244);
+}</string>
        </property>
        <property name="text">
         <string>云存储</string>
@@ -772,7 +596,7 @@ border:0px;</string>
          <normaloff>:/test/云上传.png</normaloff>:/test/云上传.png</iconset>
        </property>
       </widget>
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="pushButton_feedBack">
        <property name="geometry">
         <rect>
          <x>983</x>
@@ -782,8 +606,16 @@ border:0px;</string>
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">font: 9pt &quot;仿宋&quot;;
-	background:transparent;</string>
+        <string notr="true">*{
+	
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;宋体&quot;;
+	background:transparent;
+}
+*:hover
+{
+	color: rgb(42,166,244);
+}</string>
        </property>
        <property name="text">
         <string>意见留言</string>
@@ -796,7 +628,7 @@ border:0px;</string>
       <widget class="Line" name="line_10">
        <property name="geometry">
         <rect>
-         <x>970</x>
+         <x>974</x>
          <y>7</y>
          <width>3</width>
          <height>29</height>
@@ -806,13 +638,29 @@ border:0px;</string>
         <enum>Qt::Vertical</enum>
        </property>
       </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>120</width>
+         <height>40</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">font: 20pt &quot;黑体&quot;;
+border:0px;</string>
+       </property>
+       <property name="text">
+        <string>主屏幕</string>
+       </property>
+      </widget>
      </widget>
      <zorder>textBrowser</zorder>
      <zorder>textBrowser_8</zorder>
      <zorder>label_7</zorder>
      <zorder>label_2</zorder>
      <zorder>line_5</zorder>
-     <zorder>line_4</zorder>
      <zorder>line_9</zorder>
      <zorder>widget_8</zorder>
      <zorder>label</zorder>
@@ -820,9 +668,9 @@ border:0px;</string>
     <widget class="Line" name="line_6">
      <property name="geometry">
       <rect>
-       <x>212</x>
+       <x>208</x>
        <y>750</y>
-       <width>1070</width>
+       <width>1073</width>
        <height>2</height>
       </rect>
      </property>
@@ -846,7 +694,7 @@ border:0px;</string>
     <widget class="Line" name="line_8">
      <property name="geometry">
       <rect>
-       <x>209</x>
+       <x>207</x>
        <y>51</y>
        <width>2</width>
        <height>760</height>
@@ -859,10 +707,10 @@ border:0px;</string>
     <widget class="QWidget" name="widget_7" native="true">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>751</y>
-       <width>1070</width>
-       <height>58</height>
+       <x>208</x>
+       <y>756</y>
+       <width>1073</width>
+       <height>56</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -877,11 +725,15 @@ border:0px;</string>
 	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
 }
 QPushButton{
-	background-color: rgb(231,231,231);
+	border:1px solid;
 }	
 QPushButton:hover
 {
-	background-color: rgb(84, 85, 78);
+	border-color:  rgb(42,166,244);
+}
+QPushButton:checked
+{
+	background-color: rgb(255, 255, 255);
 }
 
 
@@ -891,13 +743,19 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>10</y>
+        <y>12</y>
         <width>75</width>
         <height>35</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 9pt &quot;仿宋&quot;;</string>
+       <string notr="true">*{
+
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+
+}
+</string>
       </property>
       <property name="text">
        <string>图片检测</string>
@@ -916,7 +774,7 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>90</x>
-        <y>10</y>
+        <y>12</y>
         <width>75</width>
         <height>35</height>
        </rect>
@@ -925,7 +783,8 @@ QPushButton:hover
        <number>-1</number>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 9pt &quot;仿宋&quot;;</string>
+       <string notr="true">
+</string>
       </property>
       <property name="text">
        <string>视频检测</string>
@@ -943,14 +802,20 @@ QPushButton:hover
      <widget class="QPushButton" name="pushButton_camer">
       <property name="geometry">
        <rect>
-        <x>165</x>
-        <y>10</y>
+        <x>160</x>
+        <y>12</y>
         <width>85</width>
         <height>35</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 9pt &quot;仿宋&quot;;
+       <string notr="true">*{
+
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+
+}
+
 </string>
       </property>
       <property name="text">
@@ -967,13 +832,17 @@ QPushButton:hover
       <property name="geometry">
        <rect>
         <x>748</x>
-        <y>10</y>
+        <y>12</y>
         <width>40</width>
         <height>35</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">font: 9pt &quot;仿宋&quot;;
+       <string notr="true">*{
+	border:1px solid;
+	border-radius:5px;
+	font: 9pt &quot;仿宋&quot;;
+}
 </string>
       </property>
       <property name="text">
@@ -988,16 +857,16 @@ QPushButton:hover
      </widget>
      <zorder>pushButton_video</zorder>
      <zorder>pushButton_finish</zorder>
-     <zorder>pushButton_camer</zorder>
      <zorder>pushButton_img</zorder>
+     <zorder>pushButton_camer</zorder>
     </widget>
     <widget class="QWidget" name="widget_6" native="true">
      <property name="geometry">
       <rect>
-       <x>213</x>
-       <y>710</y>
-       <width>1070</width>
-       <height>40</height>
+       <x>209</x>
+       <y>711</y>
+       <width>1071</width>
+       <height>51</height>
       </rect>
      </property>
      <property name="minimumSize">
@@ -1007,20 +876,51 @@ QPushButton:hover
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
+      <string notr="true">*{
+	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
+}
+QPushButton{
+	border:1px solid;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	background-color: rgb(231,231,231);
+}	
+QPushButton:hover
+{
+	
+	border-color:  rgb(42,166,244);
+}
+QPushButton:checked
+{
+	background-color: rgb(255, 255, 255);
+}
+QToolButton{
+	border:1px solid;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	background-color: rgb(231,231,231);
+}	
+QToolButton:hover
+{
+	
+	border-color:  rgb(42,166,244);
+}
 </string>
      </property>
      <widget class="QToolButton" name="toolButton_11">
       <property name="geometry">
        <rect>
-        <x>50</x>
-        <y>0</y>
+        <x>60</x>
+        <y>5</y>
         <width>40</width>
         <height>40</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">	background:transparent;</string>
+       <string notr="true">*{
+	border:0px;
+background:transparent;
+}</string>
       </property>
       <property name="text">
        <string>...</string>
@@ -1063,11 +963,14 @@ QPushButton:hover
       <property name="text">
        <string>开启轮巡</string>
       </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QToolButton" name="toolButton_12">
       <property name="geometry">
        <rect>
-        <x>1010</x>
+        <x>1009</x>
         <y>10</y>
         <width>25</width>
         <height>25</height>
@@ -1095,19 +998,25 @@ QPushButton:hover
        <iconset resource="resource.qrc">
         <normaloff>:/test/设置.png</normaloff>:/test/设置.png</iconset>
       </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
      </widget>
      <widget class="QToolButton" name="pushButton_stop">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
+        <x>10</x>
+        <y>5</y>
         <width>40</width>
         <height>40</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">	background:transparent;
+       <string notr="true">*{
+	border:0px;
+	background:transparent;
 	image: url(:/test/已停止.png);
+}
 		
 </string>
       </property>
@@ -1124,17 +1033,18 @@ QPushButton:hover
      <widget class="QToolButton" name="pushButton_start">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
+        <x>10</x>
+        <y>5</y>
         <width>40</width>
         <height>40</height>
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">	background:transparent;
-	image: url(:/test/播放.png)
-		
-</string>
+       <string notr="true">*{
+	border:0px;
+	background:transparent;
+	image: url(:/test/播放.png);
+}</string>
       </property>
       <property name="text">
        <string/>
@@ -1152,6 +1062,115 @@ QPushButton:hover
      <zorder>pushButton_start</zorder>
      <zorder>pushButton_stop</zorder>
     </widget>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>770</y>
+       <width>210</width>
+       <height>40</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">
+background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(239,239,239, 255), stop:1 rgba(248,248,248, 255));
+
+</string>
+     </property>
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="geometry">
+       <rect>
+        <x>-10</x>
+        <y>4</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">*{
+	
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;宋体&quot;;
+	background:transparent;
+}
+*:hover
+{
+	color: rgb(42,166,244);
+}</string>
+      </property>
+      <property name="text">
+       <string>设备管理</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/test/设置.png</normaloff>:/test/设置.png</iconset>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="geometry">
+       <rect>
+        <x>104</x>
+        <y>5</y>
+        <width>103</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">*{
+	
+	color: rgb(0, 0, 0);
+	font: 9pt &quot;宋体&quot;;
+	background:transparent;
+}
+*:hover
+{
+	color: rgb(42,166,244);
+}</string>
+      </property>
+      <property name="text">
+       <string>添加</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/test/_增加.png</normaloff>:/test/_增加.png</iconset>
+      </property>
+     </widget>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>1</y>
+        <width>210</width>
+        <height>3</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>101</x>
+        <y>3</y>
+        <width>2</width>
+        <height>37</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+     </widget>
+    </widget>
+    <zorder>tabWidget</zorder>
+    <zorder>widget_2</zorder>
+    <zorder>widget_3</zorder>
+    <zorder>line_6</zorder>
+    <zorder>line_7</zorder>
+    <zorder>widget_7</zorder>
+    <zorder>widget_6</zorder>
+    <zorder>widget</zorder>
+    <zorder>line_8</zorder>
    </widget>
   </widget>
  </widget>
@@ -1170,7 +1189,7 @@ QPushButton:hover
      <y>724</y>
     </hint>
     <hint type="destinationlabel">
-     <x>323</x>
+     <x>252</x>
      <y>734</y>
     </hint>
    </hints>
@@ -1198,7 +1217,7 @@ QPushButton:hover
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>329</x>
+     <x>252</x>
      <y>717</y>
     </hint>
     <hint type="destinationlabel">
@@ -1214,11 +1233,11 @@ QPushButton:hover
    <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>320</x>
+     <x>252</x>
      <y>716</y>
     </hint>
     <hint type="destinationlabel">
-     <x>344</x>
+     <x>252</x>
      <y>733</y>
     </hint>
    </hints>
